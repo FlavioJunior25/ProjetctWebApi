@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Net.Http.Headers;
+using System.Web.Http;
 
 namespace WebApi
 {
@@ -10,6 +12,14 @@ namespace WebApi
 
             // Rotas da API da Web
             config.MapHttpAttributeRoutes();
+
+
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings
+.Add(new System.Net.Http.Formatting.RequestHeaderMapping("Accept",
+                              "text/html",
+                              StringComparison.InvariantCultureIgnoreCase,
+                              true,
+                              "application/json"));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Caching;
+using System.Text;
+using System.Web.Helpers;
 using System.Web.Http;
 using TaskScheduler;
 using WebApi.Models;
@@ -63,30 +65,28 @@ namespace WebApi.Controllers
                 var cache = MemoryCache.Default;
                 var serializedData = "";
                 var result = (List<CoinModel>)cache.Get("CoinsAdded");
+                
 
                 if (result == null)
                 {
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Não existe item adicionados a lista !!"));
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "Não existe item adicionados a lista !!"));
                 }
                 else
                 {
+                    CoinModel coin = result[result.Count - 1];
                     if (result.Count() == 0)
                     {
-                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Não existe item adicionados a lista !!"));
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "Não existe item adicionados a lista !!"));
                     }
                     else
                     {
                         CoinModel coinModel = new CoinModel();
-                        serializedData = JsonConvert.SerializeObject(result, new JsonSerializerSettings
-                        {
-                            ContractResolver = new DefaultContractResolver
-                            {
-                                IgnoreSerializableAttribute = false
-                            }
-                        });
+                            
+                        serializedData = JsonConvert.SerializeObject(coin, Formatting.Indented);
+                        
                         if (coinModel.RemoveItem())
                         {
-                            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, serializedData));
+                          return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, serializedData));
                         }
                         else
                         {
@@ -108,8 +108,6 @@ namespace WebApi.Controllers
             Routine routine = new Routine();
 
             routine.DeletaTarefa();
-            System.Diagnostics.Debug.WriteLine("Tarefa deletada !");
-
 
             return Ok("Tarefa deletada !");
         }
@@ -121,8 +119,6 @@ namespace WebApi.Controllers
             Routine routine = new Routine();
 
             routine.CriarTarefa();
-            System.Diagnostics.Debug.WriteLine("Tarefa criada !");
-
 
             return Ok("Tarefa criada !");
         }
