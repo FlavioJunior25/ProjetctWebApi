@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,33 +18,86 @@ namespace WebApi.Controllers
         [Route("api/AddItemFila")]
         public IHttpActionResult AddItemFila(CoinModel coinModel)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                var cache = MemoryCache.Default;
+                if (ModelState.IsValid)
+                {
+                    var cache = MemoryCache.Default;
 
+                    var result = (List<CoinModel>)cache.Get("CoinsAdded");
+
+                    if (result == null)
+                    {
+                        List<CoinModel> ListCoins = new List<CoinModel>();
+                        ListCoins.Add(coinModel);
+                        //criando politica cache
+                        var policy = new CacheItemPolicy().AbsoluteExpiration = DateTime.Now.AddMinutes(30);
+                        cache.Set("CoinsAdded", ListCoins, policy);
+                    }
+                    else
+                    {
+                        result.Add(coinModel);
+                        var policy = new CacheItemPolicy().AbsoluteExpiration = DateTime.Now.AddMinutes(30);
+                        cache.Set("CoinsAdded", result, policy);
+                    }
+
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Item criado com sucesso !!"));
+                }
+                else
+                {
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ModelState.Select(x => x.Value.Errors.Select(l => l.ErrorMessage).FirstOrDefault()).FirstOrDefault().ToString()));
+                }
+            }
+            catch (Exception ex)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+        }
+        [HttpGet]
+        [Route("api/GetItemFila")]
+        public IHttpActionResult GetItemFila()
+        {
+            try
+            {
+
+                var cache = MemoryCache.Default;
+                var serializedData = "";
                 var result = (List<CoinModel>)cache.Get("CoinsAdded");
 
                 if (result == null)
                 {
-                    List<CoinModel> ListCoins = new List<CoinModel>();
-                    ListCoins.Add(coinModel);
-                    //criando politica cache
-                    var policy = new CacheItemPolicy().AbsoluteExpiration = DateTime.Now.AddMinutes(30);
-                    cache.Set("CoinsAdded", ListCoins, policy);
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Não existe item adicionados a lista !!"));
                 }
                 else
                 {
-                    result.Add(coinModel);
-                    var policy = new CacheItemPolicy().AbsoluteExpiration = DateTime.Now.AddMinutes(30);
-                    cache.Set("CoinsAdded", result, policy);
+                    if (result.Count() == 0)
+                    {
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Não existe item adicionados a lista !!"));
+                    }
+                    else
+                    {
+                        CoinModel coinModel = new CoinModel();
+                        serializedData = JsonConvert.SerializeObject(result, new JsonSerializerSettings
+                        {
+                            ContractResolver = new DefaultContractResolver
+                            {
+                                IgnoreSerializableAttribute = false
+                            }
+                        });
+                        if (coinModel.RemoveItem())
+                        {
+                            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, serializedData));
+                        }
+                        else
+                        {
+                            return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Erro ao remover item da lista !!"));
+                        }
+                    }
                 }
-
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Item criado com sucesso !!"));
             }
-            else
+            catch (Exception ex)
             {
-                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ModelState.Select(x => x.Value.Errors.Select(l=>l.ErrorMessage).FirstOrDefault()).FirstOrDefault().ToString()));
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
