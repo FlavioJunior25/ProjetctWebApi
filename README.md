@@ -10,6 +10,9 @@ no "Sistema de Agendamento de Tarefa do Windows" ja configurado para se repetir 
 Ira executar a aplicação "ConsoleRoutine", na pasta configurada default "C:\ConsoleLog\".
 
 <br>
+Foi instalado e configurado o swagger tambem, so digitar na url /swagger e ver a documentação.
+
+<br>
 Descrição: Esse projeto e responsavel por essas atividades:
 <br>
 Criar um serviço REST (Web API) contenha 2 métodos expostos.
