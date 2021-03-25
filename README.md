@@ -12,9 +12,8 @@ Ira executar a aplicação "ConsoleRoutine", na pasta configurada default "C:\Co
 <b>
 Descrição: Esse projeto e responsavel por essas atividades:
 <b>
-
 Criar um serviço REST (Web API) contenha 2 métodos expostos.
-</br>
+<br>
 *AddItemFila
 </br>
 O objetivo do método AddItemFila é adicionar um objeto json com o formato abaixo em uma
