@@ -2,15 +2,16 @@
 
 Projeto WebApi
 
-Descrição: Esse projeto e responsavel por essas atividades:
-<b>
- <br>
+<br>
 OBS: No projeto existe um serviço no qual ao iniciar o projeto o mesmo cadastra uma tarefa 
  <br>
 no "Sistema de Agendamento de Tarefa do Windows" ja configurado para se repetir a cada 2 Min.
  <br>
 Ira executar a aplicação "ConsoleRoutine", na pasta configurada default "C:\ConsoleLog\".
 </b>
+
+Descrição: Esse projeto e responsavel por essas atividades:
+<b>
 
 Criar um serviço REST (Web API) contenha 2 métodos expostos.
 </br>
