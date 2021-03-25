@@ -110,7 +110,7 @@ namespace TaskScheduler
                 //ID da Ação
                 oAcao.Id = "Rotina";
                 //Define o caminho do arquivo EXE a executar (Vamos abrir o Paint)                                                                                 
-                oAcao.Path = "C:/Users/Flavio.Junior/Downloads/FileZilla_3.52.2_win64-setup.exe";
+                oAcao.Path = @"C:\ConsoleLog\ConsoleRoutine.application";
 
 
                 System.Diagnostics.Debug.WriteLine("Definindo Informação da ação ....");

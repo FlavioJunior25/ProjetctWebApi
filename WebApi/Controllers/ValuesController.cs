@@ -1,14 +1,17 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Text;
 using System.Web.Helpers;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 using TaskScheduler;
 using WebApi.Models;
 
@@ -65,7 +68,7 @@ namespace WebApi.Controllers
                 var cache = MemoryCache.Default;
                 var serializedData = "";
                 var result = (List<CoinModel>)cache.Get("CoinsAdded");
-                
+
 
                 if (result == null)
                 {
@@ -81,12 +84,23 @@ namespace WebApi.Controllers
                     else
                     {
                         CoinModel coinModel = new CoinModel();
-                            
-                        serializedData = JsonConvert.SerializeObject(coin, Formatting.Indented);
-                        
+                        JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+
+
+                        serializedData = JsonConvert.SerializeObject(coin,
+                 new JsonSerializerSettings
+                 {
+                     DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                     Formatting = Formatting.Indented,
+                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                 });
+
+                        var deserializedResult = JsonConvert.DeserializeObject<CoinModel>(serializedData);
+
+
                         if (coinModel.RemoveItem())
                         {
-                          return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, serializedData));
+                            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, serializedData));
                         }
                         else
                         {
