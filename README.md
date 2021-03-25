@@ -66,3 +66,5 @@ método AddItemFila.
 o Caso exista o objeto a ser retornado, retorná-lo e retirá-lo da fila.
 <br>
 o Caso não exista, retornar algo sinalize que não existe objeto a ser retornado.
+<br>
+Versão utilizada : NETFramework,Version=v4.7.2
