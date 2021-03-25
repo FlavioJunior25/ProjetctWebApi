@@ -115,7 +115,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/DeleteTask")]
         public IHttpActionResult DeleteTask()
         {
