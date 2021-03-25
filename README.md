@@ -13,6 +13,26 @@ Ira executar a aplicação "ConsoleRoutine", na pasta configurada default "C:\Co
 Foi instalado e configurado o swagger tambem, so digitar na url /swagger e ver a documentação.
 <br>
 <br>
+Objecto CoinModel{
+<br>
+        public string Moeda { get; set; }
+        <br>
+        public DateTime Data_inicio { get; set; }
+        <br>
+        public DateTime Data_fim { get; set; }
+        <br>
+        }
+        <br>
+EndPoint Criados:
+<br>
+AddItemFila - Post Parametro(CoinModel)
+<br>
+GetItemFila - Get
+<br>
+DeleteTask - Delete (Deleta a tarefa criada no "Sistema de Agendamento de Tarefa do Windows") 
+<br>
+CreateTask - Post (Cria uma tarefa no "Sistema de Agendamento de Tarefa do Windows") 
+<br>
 Descrição: Esse projeto e responsavel por essas atividades:
 <br>
 Criar um serviço REST (Web API) contenha 2 métodos expostos.
