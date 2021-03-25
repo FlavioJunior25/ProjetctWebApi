@@ -6,7 +6,7 @@ Descrição: Esse projeto e responsavel por essas atividades:
 
 Criar um serviço REST (Web API) contenha 2 métodos expostos.
 </br>
- AddItemFila
+*AddItemFila
 </br>
 O objetivo do método AddItemFila é adicionar um objeto json com o formato abaixo em uma
 </br>
@@ -50,7 +50,7 @@ Formato objeto Json de entrada:
  </br>
 ]
 </br>
- GetItemFila
+* GetItemFila
 </br>
 O objetivo do método GetItemFila é retornar o último objeto json adicionado na fila pelo
 método AddItemFila.
